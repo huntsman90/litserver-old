@@ -1,6 +1,7 @@
 package create
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -23,5 +24,5 @@ func (c Create) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Printf("game registry failed with error: %s", err.Error())
 		return
 	}
-	log.Fprintln(w, "game room ID: ", gr.ID())
+	fmt.Fprintln(w, "game room ID: ", gr.ID())
 }
