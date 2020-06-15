@@ -19,8 +19,9 @@ func InitDeck() Deck {
 
 	cardIter := 0
 	for i := 0; i < 24; i++ {
+		// Populate entries for Lower and Upper Deck of Same Suite in each iteration
 		deck[cardIter].rank = (i % 6) + 1
-		deck[cardIter+1].rank = (i % 6) + 1 + 7
+		deck[cardIter+1].rank = deck[cardIter].rank + 7
 		deck[cardIter].suit = Suit(i / 6)
 		deck[cardIter+1].suit = Suit(i / 6)
 		cardIter += 2
@@ -44,7 +45,7 @@ func (d Deck) DistributeCards(cardsPerPlayer int, playerCount int, shuffle bool)
 	// Distribute Cards from Deck in Round-Robin fashion
 	for i := 0; i < cardsPerPlayer; i++ {
 		for j := 0; j < playerCount; j++ {
-			result[j][i] = d[(6*i)+j]
+			result[j][i] = d[(playerCount*i)+j]
 		}
 	}
 	return result
