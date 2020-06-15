@@ -1,6 +1,7 @@
 package card
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -10,12 +11,16 @@ import (
 // Deck is a set of cards
 type Deck []Card
 
+const (
+	deckSize = 48
+)
+
 // NewDeck provides a deck of 48 cards
 func NewDeck() Deck {
 	// The card deck always starts with 48 Cards
 	// 8 Sets (4 Lower + 4 Upper) with each set containing 6 cards
 	// Lower Set: 1-6, Upper Set: 8-13 ((Note 7 is skipped)
-	deck := make([]Card, 48)
+	deck := make([]Card, deckSize)
 
 	cardIter := 0
 	for i := 0; i < 24; i++ {
@@ -35,12 +40,16 @@ func NewDeck() Deck {
 }
 
 // DistributeCards allows to distribute given card deck among a set of Players
-func (d Deck) DistributeCards(cardsPerPlayer int, playerCount int, shuffle bool) [][]Card {
+func (d Deck) DistributeCards(playerCount int, shuffle bool) ([][]Card, error) {
+	if deckSize%playerCount != 0 {
+		// return error
+		return nil, errors.New("Cannot evenly distribute cards to all players")
+	}
 	// Shuffle is required
 	if shuffle {
 		d.shuffle()
 	}
-
+	cardsPerPlayer := deckSize / playerCount
 	// Create Array of Card Groups to be returned
 	result := make([][]Card, playerCount)
 	for i := range result {
@@ -53,7 +62,7 @@ func (d Deck) DistributeCards(cardsPerPlayer int, playerCount int, shuffle bool)
 			result[j][i] = d[(playerCount*i)+j]
 		}
 	}
-	return result
+	return result, nil
 }
 
 func (d Deck) shuffle() {
@@ -68,13 +77,16 @@ type CardAPI struct{}
 
 func (api CardAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	testDeck := NewDeck()
-	playerCount := 6
-	cardCount := 8
-	cardGroup := testDeck.DistributeCards(cardCount, playerCount, true)
+	playerCount := 7
+	cardGroup, err := testDeck.DistributeCards(playerCount, true)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 
 	for i := 0; i < playerCount; i++ {
 		fmt.Println("Cards for Player", i+1)
-		for j := 0; j < cardCount; j++ {
+		for j := 0; j < deckSize/playerCount; j++ {
 			fmt.Println(cardGroup[i][j])
 		}
 	}
