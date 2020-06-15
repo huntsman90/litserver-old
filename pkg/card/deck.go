@@ -3,8 +3,10 @@ package card
 import (
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -76,8 +78,19 @@ func (d Deck) shuffle() {
 type CardAPI struct{}
 
 func (api CardAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	playerCount, err := strconv.Atoi(r.FormValue("player_count"))
+	if err != nil {
+		log.Println("missing players in request")
+		return
+	}
+
 	testDeck := NewDeck()
-	playerCount := 7
 	cardGroup, err := testDeck.DistributeCards(playerCount, true)
 	if err != nil {
 		fmt.Println("Error:", err)
