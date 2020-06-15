@@ -7,6 +7,8 @@ import (
 
 	"github.com/huntsman90/litserver/pkg/gameroom/create"
 
+	"github.com/huntsman90/litserver/pkg/card"
+
 	"github.com/huntsman90/litserver/pkg/gameroom/registry"
 )
 
@@ -16,6 +18,7 @@ func NewLiteratureService() *LiteratureService {
 	mux := http.NewServeMux()
 	mux.Handle("/create", create.Create{GameRegister: rg})
 	mux.Handle("/play", play.Play{GameRegister: rg})
+	mux.Handle("/card", card.CardAPI{})
 	// mux.Handle("/helloworld", helloworld.HelloWorld{GameRegister: rg})
 	// mux.Handle("/hellosocket", hellosocket.HelloSocket{GameRegister: rg})
 
