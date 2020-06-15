@@ -10,6 +10,6 @@ const (
 	Spades
 )
 
-func (suit Suit) String() string {
-	return [...]string{"Clubs", "Diamonds", "Hearts", "Spades"}[suit]
+func (s Suit) String() string {
+	return [...]string{"Clubs", "Diamonds", "Hearts", "Spades"}[s]
 }

@@ -2,32 +2,31 @@ package card
 
 import (
 	"fmt"
-	"github.com/huntsman90/litserver/pkg/card"
 )
 
-// Card defines the attributes of each card in a deck
+// Card struct holds the definition of a single card
 type Card struct {
-	int rank
-	Suit suit
+	rank int //number/alphabet on the card
+	suit Suit
 }
 
-
-func (card Card) getStringDetail() string, string {
-	var cardName, suitName
-	switch card.rank {
+// Override the Stringer method to print card details in human understandable format
+func (c Card) String() string {
+	var cardName, suitName string
+	switch c.rank {
 	case 11:
 		cardName = "J"
-	case 11:
+	case 12:
 		cardName = "Q"
-	case 11:
+	case 13:
 		cardName = "K"
 	case 1:
 		cardName = "A"
 	default:
-		cardName = fmt.Sprint(card.rank)
+		cardName = fmt.Sprint(c.rank)
 	}
+	suitName = fmt.Sprint(c.suit)
 
-	suitName = fmt.Sprint(card.suit)
-
-	return cardName, suitName
+	// Ex: Return "A-Hearts" or "10-Spades"
+	return cardName + "-" + suitName
 }
