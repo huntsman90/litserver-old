@@ -10,20 +10,25 @@ import (
 // Deck is a set of cards
 type Deck []Card
 
-// InitDeck provides a deck of 48 cards
-func InitDeck() Deck {
-	// The Card Deck always starts with 48 Cards
+// NewDeck provides a deck of 48 cards
+func NewDeck() Deck {
+	// The card deck always starts with 48 Cards
 	// 8 Sets (4 Lower + 4 Upper) with each set containing 6 cards
 	// Lower Set: 1-6, Upper Set: 8-13 ((Note 7 is skipped)
 	deck := make([]Card, 48)
 
 	cardIter := 0
 	for i := 0; i < 24; i++ {
-		// Populate entries for Lower and Upper Deck of Same Suite in each iteration
-		deck[cardIter].rank = (i % 6) + 1
-		deck[cardIter+1].rank = deck[cardIter].rank + 7
-		deck[cardIter].suit = Suit(i / 6)
-		deck[cardIter+1].suit = Suit(i / 6)
+		// Populate entries for lower and upper deck of same suit in each iteration
+		rank := (i % 6) + 1
+		suit := SuitType(i / 6)
+
+		deck[cardIter].rank = rank
+		deck[cardIter].suit = suit
+
+		deck[cardIter+1].rank = rank + 7
+		deck[cardIter+1].suit = suit
+
 		cardIter += 2
 	}
 	return deck
@@ -62,7 +67,7 @@ func (d Deck) shuffle() {
 type CardAPI struct{}
 
 func (api CardAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	testDeck := InitDeck()
+	testDeck := NewDeck()
 	playerCount := 6
 	cardCount := 8
 	cardGroup := testDeck.DistributeCards(cardCount, playerCount, true)

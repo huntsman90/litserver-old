@@ -1,15 +1,15 @@
 package card
 
-// Suit defines the category of a card
-type Suit int
+// SuitType defines the category of a card
+type SuitType int
 
 const (
-	Clubs Suit = iota
+	Clubs SuitType = iota
 	Diamonds
 	Hearts
 	Spades
 )
 
-func (s Suit) String() string {
+func (s SuitType) String() string {
 	return [...]string{"Clubs", "Diamonds", "Hearts", "Spades"}[s]
 }

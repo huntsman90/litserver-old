@@ -7,12 +7,12 @@ import (
 // Card struct holds the definition of a single card
 type Card struct {
 	rank int //number/alphabet on the card
-	suit Suit
+	suit SuitType
 }
 
 // Override the Stringer method to print card details in human understandable format
 func (c Card) String() string {
-	var cardName, suitName string
+	var cardName string
 	switch c.rank {
 	case 11:
 		cardName = "J"
@@ -25,8 +25,17 @@ func (c Card) String() string {
 	default:
 		cardName = fmt.Sprint(c.rank)
 	}
-	suitName = fmt.Sprint(c.suit)
 
 	// Ex: Return "A-Hearts" or "10-Spades"
-	return cardName + "-" + suitName
+	return cardName + "-" + fmt.Sprint(c.suit)
+}
+
+// Rank returns the rank value of a card
+func (c Card) Rank() int {
+	return c.rank
+}
+
+// Suit returns suit value of the card
+func (c Card) Suit() SuitType {
+	return c.suit
 }
