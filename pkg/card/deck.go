@@ -86,7 +86,7 @@ func (api CardAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	playerCount, err := strconv.Atoi(r.FormValue("player_count"))
 	if err != nil {
-		log.Println("missing players in request")
+		log.Println("Missing player_count in request")
 		return
 	}
 
